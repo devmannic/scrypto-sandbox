@@ -6,7 +6,7 @@ blueprint! {
     struct Hello {
         // Define what resources and data will be managed by Hello components
         sample_vault: Vault,
-        hello2: Component,
+        hello2: lib2::Hello2,
     }
 
     impl Hello {
@@ -23,7 +23,7 @@ blueprint! {
             let c2 = lib2::Hello2::new();
             let c1 = Self {
                 sample_vault: Vault::with_bucket(my_bucket),
-                hello2: c2,
+                hello2: c2.into(),
             }
             .instantiate();
             c1
@@ -36,7 +36,8 @@ blueprint! {
             // In this case, a bucket containing 1 HelloToken is returned
             let b1 = self.sample_vault.take(1);
             //let b2 = self.sample_vault.take(1);
-            let b2 = self.hello2.call::<Bucket>("free_token2", vec![]);
+            //let b2 = self.hello2.call::<Bucket>("free_token2", vec![]);
+            let b2 = self.hello2.free_token2();
             (b1, b2)
         }
     }
